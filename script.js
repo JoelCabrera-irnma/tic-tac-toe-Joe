@@ -19,10 +19,15 @@ function gameboard (){
         const mapTablero = tablero.map((row)=>row.map((celda)=>celda.getValue()))
         console.log(mapTablero)}
 
-    const addValor = (valor)=>{
-
-        tablero[0][0].addValue(valor)
+    const addValor = (valor, row, column)=>{
+        if(tablero[row][column].getValue() === 0) {
+        tablero[row][column].addValue(valor)
+        }
+        else{return}
+        printTablero()
     }
+
+    printTablero()
 
     return { printTablero , addValor}
 }
@@ -33,12 +38,43 @@ function celda (){
     const getValue = ()=> value;
 
     const addValue = (newValor)=>{value = newValor;}
-    //addValue('ola')
+    
     return { getValue, addValue }
 }
 
-// function gameControl {
+function gameControl (){
+    const tablero = gameboard();
 
-// }
+    const players =[
+        {
+        name: 'One',
+        value: 'X'
+        },
+        {
+        name: 'Two',
+        value: '0'
+        }
+    ]
 
-const gameTest = gameboard()
+    let activePlayer = players[0]
+    
+    const curentPlayer = ()=> activePlayer;
+        
+    const switchPlayer = ()=>{
+        activePlayer===players[0] ? activePlayer=players[1] : activePlayer=players[0]
+    }
+    const showTurnPlayer = ()=>console.log(`TURNO de ${curentPlayer().name}`)
+
+    const roundGame = (row, column)=>{
+        tablero.addValor(curentPlayer().value, row, column)
+        switchPlayer()
+        showTurnPlayer()
+    }
+    
+    showTurnPlayer()
+
+    //return {printTablero: tablero.printTablero, roundGame}
+    return Object.assign({},tablero,roundGame)
+}
+
+const gameTest = gameControl()
