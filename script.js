@@ -13,8 +13,6 @@ function gameboard (){
     }
     console.log(tablero)
 
-    //tablero[1][1].addValue(7)
-
     const printTablero = () =>{
         const mapTablero = tablero.map((row)=>row.map((celda)=>celda.getValue()))
         console.log(mapTablero)}
@@ -29,7 +27,7 @@ function gameboard (){
 
     printTablero()
 
-    return { printTablero , addValor}
+    return { printTablero , addValor, tablero}
 }
 
 function celda (){
@@ -39,7 +37,7 @@ function celda (){
 
     const addValue = (newValor)=>{value = newValor;}
     
-    return { getValue, addValue }
+    return {  getValue, addValue}
 }
 
 function gameControl (){
@@ -52,7 +50,7 @@ function gameControl (){
         },
         {
         name: 'Two',
-        value: '0'
+        value: 'O'
         }
     ]
 
@@ -67,6 +65,102 @@ function gameControl (){
 
     const roundGame = (row, column)=>{
         tablero.addValor(curentPlayer().value, row, column)
+        
+        // if(
+        //     tablero.tablero[0][0].getValue()==='X'&&
+        //     tablero.tablero[0][1].getValue()==='X'&&
+        //     tablero.tablero[0][2].getValue()==='X'||
+        //     tablero.tablero[1][0].getValue()==='X'&&
+        //     tablero.tablero[1][1].getValue()==='X'&&
+        //     tablero.tablero[1][2].getValue()==='X'||
+        //     tablero.tablero[2][0].getValue()==='X'&&
+        //     tablero.tablero[2][1].getValue()==='X'&&
+        //     tablero.tablero[2][2].getValue()==='X'||
+
+        //     tablero.tablero[0][0].getValue()==='X'&&
+        //     tablero.tablero[1][0].getValue()==='X'&&
+        //     tablero.tablero[2][0].getValue()==='X'||
+        //     tablero.tablero[0][1].getValue()==='X'&&
+        //     tablero.tablero[1][1].getValue()==='X'&&
+        //     tablero.tablero[2][1].getValue()==='X'||
+        //     tablero.tablero[0][2].getValue()==='X'&&
+        //     tablero.tablero[1][2].getValue()==='X'&&
+        //     tablero.tablero[2][2].getValue()==='X'||
+
+        //     tablero.tablero[0][0].getValue()==='X'&&
+        //     tablero.tablero[1][1].getValue()==='X'&&
+        //     tablero.tablero[2][2].getValue()==='X'||
+        //     tablero.tablero[0][2].getValue()==='X'&&
+        //     tablero.tablero[1][1].getValue()==='X'&&
+        //     tablero.tablero[0][2].getValue()==='X'
+
+        // ){console.log('WINNER JUGAGOR ONE   ')}
+        // else if(
+        //     tablero.tablero[0][0].getValue()==='O'&&
+        //     tablero.tablero[0][1].getValue()==='O'&&
+        //     tablero.tablero[0][2].getValue()==='O'||
+        //     tablero.tablero[1][0].getValue()==='O'&&
+        //     tablero.tablero[1][1].getValue()==='O'&&
+        //     tablero.tablero[1][2].getValue()==='O'||
+        //     tablero.tablero[2][0].getValue()==='O'&&
+        //     tablero.tablero[2][1].getValue()==='O'&&
+        //     tablero.tablero[2][2].getValue()==='O'||
+
+        //     tablero.tablero[0][0].getValue()==='O'&&
+        //     tablero.tablero[1][0].getValue()==='O'&&
+        //     tablero.tablero[2][0].getValue()==='O'||
+        //     tablero.tablero[0][1].getValue()==='O'&&
+        //     tablero.tablero[1][1].getValue()==='O'&&
+        //     tablero.tablero[2][1].getValue()==='O'||
+        //     tablero.tablero[0][2].getValue()==='O'&&
+        //     tablero.tablero[1][2].getValue()==='O'&&
+        //     tablero.tablero[2][2].getValue()==='O'||
+
+        //     tablero.tablero[0][0].getValue()==='O'&&
+        //     tablero.tablero[1][1].getValue()==='O'&&
+        //     tablero.tablero[2][2].getValue()==='O'||
+        //     tablero.tablero[0][2].getValue()==='O'&&
+        //     tablero.tablero[1][1].getValue()==='O'&&
+        //     tablero.tablero[0][2].getValue()==='O'
+        // ){console.log('WINNER JUGAGOR TWO')}
+
+        function checkWinner(player) {
+            // Verificar filas y columnas
+            for (let i = 0; i < 3; i++) {
+                if ((tablero.tablero[i][0].getValue() === player &&
+                    tablero.tablero[i][1].getValue() === player &&
+                    tablero.tablero[i][2].getValue() === player) ||
+                    (tablero.tablero[0][i].getValue() === player &&
+                    tablero.tablero[1][i].getValue() === player &&
+                    tablero.tablero[2][i].getValue() === player)) {
+                    console.log(`WINNER JUGAGOR ${curentPlayer().name}`);
+                    return true;
+                }
+            }
+        
+            // Verificar diagonales
+            if ((tablero.tablero[0][0].getValue() === player &&
+                tablero.tablero[1][1].getValue() === player &&
+                tablero.tablero[2][2].getValue() === player) ||
+                (tablero.tablero[0][2].getValue() === player &&
+                tablero.tablero[1][1].getValue() === player &&
+                tablero.tablero[2][0].getValue() === player)) {
+                console.log(`WINNER JUGAGOR ${curentPlayer().name}`);
+                return true;
+            }
+        
+            return false;
+        }
+
+        checkWinner(curentPlayer().value)
+        
+        // if (checkWinner('X')) {
+        //     // Código adicional si 'X' es el ganador
+        // } else if (checkWinner('O')) {
+        //     // Código adicional si 'O' es el ganador
+        // }
+            
+
         switchPlayer()
         showTurnPlayer()
     }
@@ -74,7 +168,7 @@ function gameControl (){
     showTurnPlayer()
 
     //return {printTablero: tablero.printTablero, roundGame}
-    return Object.assign({},tablero,roundGame)
+    return Object.assign({},tablero,{roundGame})
 }
 
 const gameTest = gameControl()
