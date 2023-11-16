@@ -16,12 +16,13 @@ function gameboard (){
 
     const printTablero = () =>{
         const mapTablero = tablero.map((row)=>row.map((celda)=>celda.getValue()))
-        console.log(mapTablero)}
+        //console.log(mapTablero)
+    }
 
     const addValor = (valor, row, column)=>{
         if(tablero[row][column].getValue() === 0) {
-        tablero[row][column].addValue(valor)
-        }
+            tablero[row][column].addValue(valor)
+            }
         else{return}
         printTablero()
     }
@@ -40,6 +41,8 @@ function celda (){
     
     return {  getValue, addValue}
 }
+
+let winner = null
 
 function gameControl (){
     const tablero = gameboard();
@@ -64,7 +67,7 @@ function gameControl (){
     }
     const showTurnPlayer = ()=>console.log(`TURNO de ${curentPlayer().name}`)
 
-    let winner
+    
     const roundGame = (row, column)=>{
         tablero.addValor(curentPlayer().value, row, column)
         
@@ -97,13 +100,19 @@ function gameControl (){
         }
 
         checkWinner(curentPlayer().value)
-        //console.log(checkWin)
-        if (checkWinner('X')) {
-            winner = 'Ganador Jugador Uno' // Código adicional si 'X' es el ganador
+        
+        const todasCeldasOcupadas = tablero.tablero.every(row =>
+            row.every(celda => celda.getValue() !== 0)
+        );
+        
+        if (todasCeldasOcupadas && !checkWinner('X') && !checkWinner('O')) {
+            winner = '¡Empate!';
+        } else if (checkWinner('X')) {
+            winner = 'Ganador Jugador Uno';
         } else if (checkWinner('O')) {
-            winner = 'Ganador Jugador Dos'// Código adicional si 'O' es el ganador
+            winner = 'Ganador Jugador Dos';
         }
-
+        
         switchPlayer();
         showTurnPlayer()
     }
@@ -138,8 +147,8 @@ function displayGame (){
           displayBoard.appendChild(cellButton);
             })
         })
-        displayTurno.textContent = `Turno de Jugador ${game.curentPlayer().name}`
-
+        displayTurno.textContent = game.getWinner()===null ?`Turno de Jugador ${game.curentPlayer().name}` :""
+    
         showToWinner()
         //console.log(game.curentPlayer().name)
     }
@@ -163,10 +172,17 @@ function displayGame (){
     
     updateScreen();
 
+    const restartButton = document.querySelector('.restartButton');
+    restartButton.addEventListener('click', () => {
+    // Reiniciar el juego
+    game.tablero().forEach(row => row.forEach(cell => cell.addValue(0)));
+    winner = null;
+    //game.showTurnPlayer();
+    updateScreen();
+  });
+
     return{showToWinner}
 
-    //console.log(typeof displayBoard)
-    //console.dir(displayBoard)
 }
 
 
