@@ -13,6 +13,8 @@ function gameboard (){
     }
     console.log(tablero)
 
+    const getTablero = ()=>tablero
+
     const printTablero = () =>{
         const mapTablero = tablero.map((row)=>row.map((celda)=>celda.getValue()))
         console.log(mapTablero)}
@@ -27,7 +29,7 @@ function gameboard (){
 
     printTablero()
 
-    return { printTablero , addValor, tablero}
+    return { printTablero , addValor, tablero, getTablero}
 }
 
 function celda (){
@@ -160,15 +162,59 @@ function gameControl (){
         //     // Código adicional si 'O' es el ganador
         // }
             
-
-        switchPlayer()
+        switchPlayer();
         showTurnPlayer()
     }
     
-    showTurnPlayer()
+    showTurnPlayer();
 
     //return {printTablero: tablero.printTablero, roundGame}
-    return Object.assign({},tablero,{roundGame})
+    return Object.assign({},{roundGame},{tablero: tablero.getTablero})
 }
 
-const gameTest = gameControl()
+function displayGame (){
+    const game = gameControl()
+    const displayTurno = document.querySelector('.displayTurno');
+    const displayBoard = document.querySelector('.displayBoard');
+    
+    const updateScreen = () => {
+        const board = game.tablero()
+        displayBoard.innerHTML = "";
+        board.textContent = ""
+
+        board.forEach((row, indexR) => {
+        row.forEach((cell, indexC) => {
+            
+          // Anything clickable should be a button!!
+          const cellButton = document.createElement("button");
+          cellButton.classList.add("square");
+          // Create a data attribute to identify the column
+          // This makes it easier to pass into our `playRound` function 
+          cellButton.dataset.row = indexR
+          cellButton.dataset.column = indexC
+          cellButton.textContent = cell.getValue()===0 ?"":cell.getValue();
+          displayBoard.appendChild(cellButton);
+            })
+        })
+    }
+    function clickHandlerBoard(e) {
+        console.log(e)
+        const selectedColumn = e.target.dataset.column;
+        const selectedRow = e.target.dataset.row;
+        // Make sure I've clicked a column and not the gaps in between
+        if (!selectedColumn) return;
+        
+        game.roundGame(selectedRow,selectedColumn);
+        updateScreen();
+      }
+    displayBoard.addEventListener('click',clickHandlerBoard)
+    
+    updateScreen()
+
+    //console.log(typeof displayBoard)
+    //console.dir(displayBoard)
+}
+
+
+const ejem = displayGame()
+
