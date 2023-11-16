@@ -3,9 +3,27 @@
     grid-template-columns: repeat(3, 80px);
     grid-template-rows: repeat(3, 80px);
     justify-content: center;
-    margin-top: 100px;
+    
 }
 .square{
     border: 1px solid red;
 }
 
+.displayTurno{
+    border: 1px solid black;
+    text-align: center;
+}
+
+.mainContent{
+    margin-top: 100px;
+    border: 1px solid greenyellow;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+}
+
+.displayWin{
+    border: 1px solid rgb(0, 255, 255);
+    text-align: center;
+}

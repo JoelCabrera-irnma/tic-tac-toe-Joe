@@ -64,9 +64,9 @@ function gameControl (){
     }
     const showTurnPlayer = ()=>console.log(`TURNO de ${curentPlayer().name}`)
 
+    let winner
     const roundGame = (row, column)=>{
         tablero.addValor(curentPlayer().value, row, column)
-        
         
         function checkWinner(player) {
             // Verificar filas y columnas
@@ -97,28 +97,29 @@ function gameControl (){
         }
 
         checkWinner(curentPlayer().value)
-        
-        // if (checkWinner('X')) {
-        //     // Código adicional si 'X' es el ganador
-        // } else if (checkWinner('O')) {
-        //     // Código adicional si 'O' es el ganador
-        // }
-            
+        //console.log(checkWin)
+        if (checkWinner('X')) {
+            winner = 'Ganador Jugador Uno' // Código adicional si 'X' es el ganador
+        } else if (checkWinner('O')) {
+            winner = 'Ganador Jugador Dos'// Código adicional si 'O' es el ganador
+        }
+
         switchPlayer();
         showTurnPlayer()
     }
-    
+    const getWinner = ()=>winner
     showTurnPlayer();
 
     //return {printTablero: tablero.printTablero, roundGame}
-    return Object.assign({},{roundGame},{tablero: tablero.getTablero})
+return Object.assign({},{roundGame},{tablero: tablero.getTablero},{curentPlayer},{getWinner})
 }
 
 function displayGame (){
     const game = gameControl()
     const displayTurno = document.querySelector('.displayTurno');
     const displayBoard = document.querySelector('.displayBoard');
-    
+    const displayWin = document.querySelector('.displayWin');
+
     const updateScreen = () => {
         const board = game.tablero()
         displayBoard.innerHTML = "";
@@ -126,7 +127,6 @@ function displayGame (){
 
         board.forEach((row, indexR) => {
         row.forEach((cell, indexC) => {
-            
           // Anything clickable should be a button!!
           const cellButton = document.createElement("button");
           cellButton.classList.add("square");
@@ -138,23 +138,32 @@ function displayGame (){
           displayBoard.appendChild(cellButton);
             })
         })
+        displayTurno.textContent = `Turno de Jugador ${game.curentPlayer().name}`
+
+        showToWinner()
+        //console.log(game.curentPlayer().name)
+    }
+
+    function showToWinner(){
+        displayWin.textContent = game.getWinner()
+        return game.getWinner()
     }
     function clickHandlerBoard(e) {
-        console.log(e)
+        //console.log(e)
         const selectedColumn = e.target.dataset.column;
         const selectedRow = e.target.dataset.row;
         const key = e.target.innerText
         // Make sure I've clicked a column and not the gaps in between
         if ((!selectedColumn)||(key === 'X' || key === 'O')) return;
-        // else if(key === 'X' || key === 'O'){
-        //     console.log('elegi otra celda')
-        //     return}
+
         game.roundGame(selectedRow,selectedColumn);
         updateScreen();
       }
     displayBoard.addEventListener('click',clickHandlerBoard)
     
     updateScreen();
+
+    return{showToWinner}
 
     //console.log(typeof displayBoard)
     //console.dir(displayBoard)

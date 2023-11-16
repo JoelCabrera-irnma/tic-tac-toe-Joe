@@ -1,49 +1,24 @@
-function Gameboard() {
-    const rows = 3;
-    const columns = 3;
-    const board = [];
-    const getBoard = () => board;
-    
-    for (let i = 0; i < rows; i++) {
-      board[i] = [];
-      for (let j = 0; j < columns; j++) {
-        board[i].push(0)
-      }
-    }
+function funcionExterna() {
+  // Definir las funciones internas
+  function funcion1() {
+    console.log('Función 1');
+  }
 
-    return { getBoard};
-}  
+  function funcion2() {
+    console.log('Función 2');
+  }
 
-function GameController(){
-    const board = Gameboard();
-return {
-    getBoard: board.getBoard
-  };
+  function funcion3() {
+    console.log('Función 3');
+  }
+
+  funcion3()
+  // Devolver solo una de las funciones
+  return funcion1;
 }
 
-function ScreenController() {
-const game = GameController();
-const boardDiv = document.querySelector('.displayBoard');
+// Almacenar la función devuelta en una variable
+const miFuncion = funcionExterna();
 
-console.log(game.getBoard())
-
-const updateScreen = () => {
-    const board = game.getBoard();
-    console.log(board.getBoard)
-
-board.forEach((row, indexR) => {
-    row.forEach((cell, indexC) => {
-      // Anything clickable should be a button!!
-      const cellButton = document.createElement("button");
-      cellButton.classList.add("square");
-      // Create a data attribute to identify the column
-      // This makes it easier to pass into our `playRound` function 
-      cellButton.dataset.row = indexR
-      cellButton.dataset.column = indexC
-      //cellButton.textContent = cell.getValue();
-      boardDiv.appendChild(cellButton);
-    })
-})
-}
-updateScreen()
-}
+// Llamar a la función desde fuera de funcionExterna
+miFuncion(); // Esto imprimirá 'Función 1'
