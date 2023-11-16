@@ -1,5 +1,4 @@
 
-
 function gameboard (){
     const tablero = []
     const row = 3
@@ -68,64 +67,7 @@ function gameControl (){
     const roundGame = (row, column)=>{
         tablero.addValor(curentPlayer().value, row, column)
         
-        // if(
-        //     tablero.tablero[0][0].getValue()==='X'&&
-        //     tablero.tablero[0][1].getValue()==='X'&&
-        //     tablero.tablero[0][2].getValue()==='X'||
-        //     tablero.tablero[1][0].getValue()==='X'&&
-        //     tablero.tablero[1][1].getValue()==='X'&&
-        //     tablero.tablero[1][2].getValue()==='X'||
-        //     tablero.tablero[2][0].getValue()==='X'&&
-        //     tablero.tablero[2][1].getValue()==='X'&&
-        //     tablero.tablero[2][2].getValue()==='X'||
-
-        //     tablero.tablero[0][0].getValue()==='X'&&
-        //     tablero.tablero[1][0].getValue()==='X'&&
-        //     tablero.tablero[2][0].getValue()==='X'||
-        //     tablero.tablero[0][1].getValue()==='X'&&
-        //     tablero.tablero[1][1].getValue()==='X'&&
-        //     tablero.tablero[2][1].getValue()==='X'||
-        //     tablero.tablero[0][2].getValue()==='X'&&
-        //     tablero.tablero[1][2].getValue()==='X'&&
-        //     tablero.tablero[2][2].getValue()==='X'||
-
-        //     tablero.tablero[0][0].getValue()==='X'&&
-        //     tablero.tablero[1][1].getValue()==='X'&&
-        //     tablero.tablero[2][2].getValue()==='X'||
-        //     tablero.tablero[0][2].getValue()==='X'&&
-        //     tablero.tablero[1][1].getValue()==='X'&&
-        //     tablero.tablero[0][2].getValue()==='X'
-
-        // ){console.log('WINNER JUGAGOR ONE   ')}
-        // else if(
-        //     tablero.tablero[0][0].getValue()==='O'&&
-        //     tablero.tablero[0][1].getValue()==='O'&&
-        //     tablero.tablero[0][2].getValue()==='O'||
-        //     tablero.tablero[1][0].getValue()==='O'&&
-        //     tablero.tablero[1][1].getValue()==='O'&&
-        //     tablero.tablero[1][2].getValue()==='O'||
-        //     tablero.tablero[2][0].getValue()==='O'&&
-        //     tablero.tablero[2][1].getValue()==='O'&&
-        //     tablero.tablero[2][2].getValue()==='O'||
-
-        //     tablero.tablero[0][0].getValue()==='O'&&
-        //     tablero.tablero[1][0].getValue()==='O'&&
-        //     tablero.tablero[2][0].getValue()==='O'||
-        //     tablero.tablero[0][1].getValue()==='O'&&
-        //     tablero.tablero[1][1].getValue()==='O'&&
-        //     tablero.tablero[2][1].getValue()==='O'||
-        //     tablero.tablero[0][2].getValue()==='O'&&
-        //     tablero.tablero[1][2].getValue()==='O'&&
-        //     tablero.tablero[2][2].getValue()==='O'||
-
-        //     tablero.tablero[0][0].getValue()==='O'&&
-        //     tablero.tablero[1][1].getValue()==='O'&&
-        //     tablero.tablero[2][2].getValue()==='O'||
-        //     tablero.tablero[0][2].getValue()==='O'&&
-        //     tablero.tablero[1][1].getValue()==='O'&&
-        //     tablero.tablero[0][2].getValue()==='O'
-        // ){console.log('WINNER JUGAGOR TWO')}
-
+        
         function checkWinner(player) {
             // Verificar filas y columnas
             for (let i = 0; i < 3; i++) {
@@ -201,15 +143,18 @@ function displayGame (){
         console.log(e)
         const selectedColumn = e.target.dataset.column;
         const selectedRow = e.target.dataset.row;
+        const key = e.target.innerText
         // Make sure I've clicked a column and not the gaps in between
-        if (!selectedColumn) return;
-        
+        if ((!selectedColumn)||(key === 'X' || key === 'O')) return;
+        // else if(key === 'X' || key === 'O'){
+        //     console.log('elegi otra celda')
+        //     return}
         game.roundGame(selectedRow,selectedColumn);
         updateScreen();
       }
     displayBoard.addEventListener('click',clickHandlerBoard)
     
-    updateScreen()
+    updateScreen();
 
     //console.log(typeof displayBoard)
     //console.dir(displayBoard)
