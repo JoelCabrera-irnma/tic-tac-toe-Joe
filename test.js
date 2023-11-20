@@ -1,24 +1,37 @@
-function funcionExterna() {
-  // Definir las funciones internas
-  function funcion1() {
-    console.log('Función 1');
+let gameboard = ["","","","","","","","",""]
+
+const scopeOne = (()=>{
+  
+ 
+  const createDiv = ()=>{
+    const displayBoard = document.querySelector('.displayBoard')
+    const element = document.createElement('div')
+    element.classList.add('box')
+    displayBoard.appendChild(element)
+    
   }
 
-  function funcion2() {
-    console.log('Función 2');
+  return{createDiv}
+  })();
+
+const scopeTwo =(()=>{
+
+  const start = (event)=>{
+    alert('ola ke ase')
+    scopeOne.createDiv()
+
+    const box = document.querySelector('.box')
+    box.addEventListener('click', getSome)
   }
 
-  function funcion3() {
-    console.log('Función 3');
-  }
+  const getSome = ()=>{
+    console.log('hola puto')
+    const displayWin = document.querySelector('.displayWin')
+    displayWin.textContent = "Hola  A TODITOS"
+    }
 
-  funcion3()
-  // Devolver solo una de las funciones
-  return funcion1;
-}
+  return {start, getSome}
+})();
 
-// Almacenar la función devuelta en una variable
-const miFuncion = funcionExterna();
-
-// Llamar a la función desde fuera de funcionExterna
-miFuncion(); // Esto imprimirá 'Función 1'
+const selector = document.querySelector('.restartButton')
+  selector.addEventListener('click', ()=>{scopeTwo.start()}  )

@@ -112,7 +112,7 @@ function gameControl (){
         } else if (checkWinner('O')) {
             winner = 'Ganador Jugador Dos';
         }
-        
+
         switchPlayer();
         showTurnPlayer()
     }
@@ -145,6 +145,8 @@ function displayGame (){
           cellButton.dataset.column = indexC
           cellButton.textContent = cell.getValue()===0 ?"":cell.getValue();
           displayBoard.appendChild(cellButton);
+          if(cell.getValue()==='X'){cellButton.classList.add("playerEquis")}
+          else if(cell.getValue()==='O'){cellButton.classList.add("playerCircle")}
             })
         })
         displayTurno.textContent = game.getWinner()===null ?`Turno de Jugador ${game.curentPlayer().name}` :""
@@ -159,6 +161,7 @@ function displayGame (){
     }
     function clickHandlerBoard(e) {
         //console.log(e)
+        if(winner!==null) return;
         const selectedColumn = e.target.dataset.column;
         const selectedRow = e.target.dataset.row;
         const key = e.target.innerText
@@ -184,7 +187,5 @@ function displayGame (){
     return{showToWinner}
 
 }
-
-
 const ejem = displayGame()
 
